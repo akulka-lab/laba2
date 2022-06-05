@@ -15,6 +15,75 @@
 #include "Header.h"
 
 using namespace std;
+
+int read_data() {
+    int read_mode = 0;
+    printf(
+           " _______________________________________________________________________  \n"
+            "|                                                                       | \n"
+            "|                   How do you want to write data?                      | \n"
+            "|                                                                       | \n"
+            "|   1  -> Read data from std                                            | \n"
+            "|   2  -> Read data from input file                                     | \n"
+            "|   3  -> Random data generation                                        | \n"
+            "|   4  -> Exit                                                          | \n"
+            "|____  _________________________________________________________________| \n"
+            "     |/                                                                   \n");
+
+    scanf("%d", &read_mode);
+    return read_mode;
+}
+
+int show_data() {
+    int show_mode = 0;
+    printf(
+            " _______________________________________________________________________  \n"
+            "|                                                                       | \n"
+            "|                   How do you want to see data?                        | \n"
+            "|                                                                       | \n"
+            "|   1  -> See data from std                                             | \n"
+            "|   2  -> See data in output file                                       | \n"
+            "|   3  -> Exit                                                          | \n"
+            "|____  _________________________________________________________________| \n"
+            "     |/                                                                   \n");
+
+    scanf("%d", &show_mode);
+    return show_mode;
+}
+
+
+int need_print_data() {
+    int need_print = 0;
+    printf(
+            " _________________________________________  \n"
+            "|                                         | \n"
+            "|          See data right now?            | \n"
+            "|                                         | \n"
+            "|   1  -> Yes                             | \n"
+            "|   2  -> No                              | \n"
+            "|____  ___________________________________| \n"
+            "     |/                                     \n");
+
+    scanf("%d", &need_print);
+    return need_print;
+}
+
+void gnome_sort(void *base, int len, int size, int (*comp)(const void *,const void *))
+{
+    int i = 1;
+    char *p = (char *) base;
+    while (i < len) {
+        if (i == 0)
+            i = 1;
+        if (comp((p + (i - 1) * size), p + i * size)) {
+            i++;
+        } else {
+            swap(p + (i - 1) * size, p + i * size, size);
+            i--;
+        }
+    }
+}
+
 void menu()
 {
 	queuePriority<int>* queueInt = 0;
@@ -29,14 +98,6 @@ void menu()
 
 	auto menuExistQueue = [&]()
 	{
-		if (queueFloat==0 && queueInt==0) 
-		{
-			cout << "all queue empty!" << endl; 
-			system("pause");
-			page = -1;
-			menu();
-		}
-
 		Queue_type();
 		cin >> choice;
 
@@ -263,9 +324,6 @@ void menu()
 					}
 					if (miniChoice == 1)
 					{
-						cout << "1.More" << endl;
-						cout << "2.Less" << endl;
-						cin >> n;
 						while (n != 1 && n != 2)
 						{
 							cout << "try again" << endl;
@@ -303,23 +361,26 @@ void menu()
 
 				page = -1;
 			}
-			else if (page == 3)
-			{
-				LinkedListTests* testList = new LinkedListTests();
-				DynamicArrayTests* testArray = new DynamicArrayTests();
-				LinkedListSequenceTests* testListSequence = new LinkedListSequenceTests();
-				ArraySequenceTests* testArraySequence = new ArraySequenceTests();
-				queuePriorityTests* testQueuePriority = new queuePriorityTests();
-				testQueuePriority->Test();
-				testArray->Test();
-				testList->Test();
-				testListSequence->Test();
-				testArraySequence->Test();
-				cout << "SecondLaba work correctly\n";
-				system("pause");
-				page = -1;
-			}
 		}
 
 	}
+}
+
+void double_selection_sort(void *base, int len, int size, int (*comp)(const void *,const void *))
+{
+    int min = 0;
+    int max = 0;
+    char *p = (char *) base;
+    for (int i = 0; i < len/2 + len % 2; i++) {
+        min = i;
+        min = len - i - 1;
+        for (int j = i + 1; j < len - i - 1; j++) {
+            if (comp(p + j * size, p + min * size) < 0)
+                min = j;
+            if (comp(p + j * size, p + min * size) > 0)
+                max = j;
+        }
+        swap(p + i * size, p + min * size);
+        swap(p + (len - i - 1) * size, p + max * size);
+    }
 }
