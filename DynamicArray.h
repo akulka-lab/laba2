@@ -9,6 +9,8 @@ private:
 	T* arrayPointer;
 	int size;
 	int count;
+	int len;
+	int m;
 
 public:
 	DynamicArray(int size);
@@ -19,9 +21,44 @@ public:
 	int GetSize()const;
 	int GetCount() const;
 	T Get(int index) const;
-	void Set(int index, T value);
-	void Resize(int newSize);
-	void Remove(int index);
+	void Set(int index, T value)
+	{
+		if (index > this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Set()"); throw; }
+		this->count += 1;
+		Resize(this->GetSize() + 1);
+		memmove(this->arrayPointer + index + 1, this->arrayPointer + index, (this->count - index - 1) * sizeof(T));
+		this->arrayPointer[index] = value;
+
+	}
+	
+	void Resize(int newSize)
+	{
+		if (newSize < 0)
+		{
+			errors(NegativeSize, "DynamicArray->Resize()");
+			throw;
+		}
+		else if (newSize == 0)
+		{
+			errors(ZeroSize, "DynamicArray->Resize()");
+			throw;
+	}
+	T* newSizePointer = new T[newSize];
+	int copySize = newSize > (this->size) ? this->size : newSize;
+	memcpy(newSizePointer, this->arrayPointer, copySize * sizeof(T));
+	this->count = newSize > this->size ? this->count : newSize;
+	this->size = newSize;
+	delete[] this->arrayPointer;
+	this->arrayPointer = newSizePointer;
+}
+
+	void Remove(int index)
+	{
+
+		if (index >= this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Remove()"); throw; }
+		this->count -= 1;
+		memmove(this->arrayPointer + index, this->arrayPointer + (index + 1), (this->count - index) * sizeof(T));
+	}
 	//void Print();
 };
 
@@ -84,46 +121,4 @@ T DynamicArray<T>::Get(int index) const
 {
 	if (index >= this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Get()"); throw; }
 	return this->arrayPointer[index];
-}
-
-template<typename T>
-void DynamicArray<T>::Set(int index, T value)
-{
-	if (index > this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Set()"); throw; }
-	this->count += 1;
-	Resize(this->GetSize() + 1);
-	memmove(this->arrayPointer + index + 1, this->arrayPointer + index, (this->count - index - 1) * sizeof(T));
-	this->arrayPointer[index] = value;
-
-}
-
-template<typename T>
-void DynamicArray<T>::Resize(int newSize)
-{
-	if (newSize < 0)
-	{
-		errors(NegativeSize, "DynamicArray->Resize()");
-		throw;
-	}
-	else if (newSize == 0)
-	{
-		errors(ZeroSize, "DynamicArray->Resize()");
-		throw;
-	}
-	T* newSizePointer = new T[newSize];
-	int copySize = newSize > (this->size) ? this->size : newSize;
-	memcpy(newSizePointer, this->arrayPointer, copySize * sizeof(T));
-	this->count = newSize > this->size ? this->count : newSize;
-	this->size = newSize;
-	delete[] this->arrayPointer;
-	this->arrayPointer = newSizePointer;
-}
-
-template<typename T>
-void DynamicArray<T>::Remove(int index)
-{
-
-	if (index >= this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Remove()"); throw; }
-	this->count -= 1;
-	memmove(this->arrayPointer + index, this->arrayPointer + (index + 1), (this->count - index) * sizeof(T));
 }
