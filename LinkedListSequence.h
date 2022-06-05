@@ -15,6 +15,8 @@ public:
 public:
     virtual T GetFirst()const;
     virtual T GetLast()const;
+    virtual T GetOne()const;
+    virtual T GetTwo()const;
     virtual T Get(int index)const;
     virtual int  GetLength()const override; 
     virtual void Remove(int index)override; 
@@ -58,22 +60,7 @@ T LinkedListSequence<T>::GetLast()const
     return this->items->GetLast(); 
 }
 
-template <class T>
-T LinkedListSequence<T>::Get(int index)const 
-{ 
-    return this->items->Get(index); 
-}
 
-template <class T>
-int LinkedListSequence<T>::GetLength() const
-{ 
-    return this->lenght; }
-
-template <class T>
-void LinkedListSequence<T>::Remove(int index) 
-{
-    this->lenght--; this->items->Remove(index); 
-}
 
 template <class T>
 void LinkedListSequence<T>::Append(T item) 
@@ -85,6 +72,24 @@ template <class T>
 void LinkedListSequence<T>::Prepend(T item) 
 {
     this->lenght++; this->items->Prepend(item); 
+}
+
+template <class T>
+void LinkedListSequence<T>::GetOne(T item) 
+{
+    for (int i = 0; i < list->GetLength(); i++)
+    {
+        int m = 1;
+    }
+}
+
+template <class T>
+void LinkedListSequence<T>::GetTwo(T item) 
+{
+    for (int i = 0; i < list->GetLength(); i++)
+    {
+        int m = 2;
+    }
 }
 
 template <class T>
@@ -105,6 +110,22 @@ Sequence<T>* LinkedListSequence<T>::Concat(Sequence<T>* list)const
     return (Sequence<T>*)concatedSequence;
 }
 
+template <class T>
+T LinkedListSequence<T>::Get(int index)const 
+{ 
+    return this->items->Get(index); 
+}
+
+template <class T>
+int LinkedListSequence<T>::GetLength() const
+{ 
+    return this->lenght; }
+
+template <class T>
+void LinkedListSequence<T>::Remove(int index) 
+{
+    this->lenght--; this->items->Remove(index); 
+}
 template <class T>
 Sequence<T>* LinkedListSequence<T>::GetSubsequence(int startIndex, int endIndex) const
 {
